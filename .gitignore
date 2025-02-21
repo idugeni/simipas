@@ -1,0 +1,50 @@
+# Node.js dependencies
+node_modules
+pnpm-lock.yaml
+yarn.lock
+
+# TypeScript output
+dist
+build
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs & Debugging
+logs
+npm-debug.log
+yarn-debug.log
+pnpm-debug.log
+turbo-debug.log
+*.log
+
+# IDE & Editor files
+.vscode
+.idea
+*.iml
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Testing & Coverage
+coverage
+test-results
+
+# Playwright specific
+playwright-report
+trace.zip
+
+# Linting & Formatting
+.eslintcache
+prettiercache
+
+# Temporary files
+tmp
+temp
+*.tmp
+*.swp
+*.swo
+*.bak

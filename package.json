@@ -1,0 +1,38 @@
+{
+    "name": "simipas",
+    "version": "0.1.7-alpha",
+    "description": "SIMIPAS adalah tool untuk mengisi jurnal harian SIMPEG KEMENIMIPAS secara otomatis.",
+    "main": "src/app/index.ts",
+    "scripts": {
+        "start": "ts-node -r tsconfig-paths/register src/app/index.ts"
+    },
+    "keywords": [
+        "SIMPEG",
+        "automation",
+        "jurnal",
+        "harian",
+        "KEMENIMIPAS"
+    ],
+    "author": "Eliyanto Sarage",
+    "license": "MIT",
+    "type": "commonjs",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/idugeni/simipas.git"
+    },
+    "bugs": {
+        "url": "https://github.com/idugeni/simipas/issues"
+    },
+    "homepage": "https://github.com/idugeni/simipas",
+    "dependencies": {
+        "@types/node": "^22.13.4",
+        "ansi-styles": "^6.2.1",
+        "playwright": "^1.50.1",
+        "ts-node": "^10.9.2",
+        "tsconfig-paths": "^4.2.0",
+        "winston": "^3.17.0"
+    },
+    "devDependencies": {
+        "typescript": "^5.7.3"
+    }
+}
