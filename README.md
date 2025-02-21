@@ -19,7 +19,7 @@ SIMIPAS adalah tool untuk mengisi jurnal harian SIMPEG KEMENIMIPAS secara otomat
 
 <div align="center">
 
-[Overview](#overview) | [Features](#features) | [Installation](#installation) | [Usage](#usage) | [Project Structure](#project-structure) | [Contributing](#contributing) | [License](#license) | [Contact](#contact)
+[Overview](#-overview) | [Features](#-features) | [Installation](#-installation) | [Usage](#-usage) | [Project Structure](#-project-structure) | [Contributing](#-contributing) | [License](#-license) | [Contact](#-contact)
 
 </div>
 
