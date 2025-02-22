@@ -39,8 +39,7 @@ export class JournalManager {
         state: 'visible',
         timeout: DEFAULT_TIMEOUT
       });
-      await dateInput?.click();
-
+      await dateInput.click();
       await this.page.waitForSelector('.datepicker', {
         state: 'visible',
         timeout: DEFAULT_TIMEOUT
@@ -48,41 +47,81 @@ export class JournalManager {
       await this.page.waitForLoadState('networkidle');
 
       const [day, month, year] = date.split('/');
-      const desiredDay = day;
+      const desiredDay = String(parseInt(day, 10));
       const desiredMonth = Number(month);
       const desiredYear = Number(year);
-
-      let attempts = 0;
       const englishMonths = [
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
       ];
-      while (attempts < 12) {
-        const currentMonthYear = await this.page.$eval('.datepicker .datepicker-switch', el => el.textContent?.trim() || '');
-        const [currentMonthName, currentYearStr] = currentMonthYear.split(' ');
-        const currentYear = Number(currentYearStr);
-        const currentMonth = englishMonths.indexOf(currentMonthName) + 1;
 
-        if (currentYear === desiredYear && currentMonth === desiredMonth) {
-          break;
+      let header = await this.page.$eval('.datepicker .switch', el => (el.textContent || '').trim());
+      logger.info(`Header awal: ${header}`);
+      let [currentMonthName, currentYearStr] = header.split(' ');
+      let currentMonth = englishMonths.indexOf(currentMonthName) + 1;
+      let currentYear = Number(currentYearStr);
+
+      const navigateToTargetHeader = async () => {
+        let attempts = 0;
+        while (attempts < 12) {
+          header = await this.page.$eval('.datepicker .switch', el => (el.textContent || '').trim());
+          if (header.includes(englishMonths[desiredMonth - 1]) && header.includes(String(desiredYear))) {
+            break;
+          }
+          if (
+            currentYear < desiredYear ||
+            (currentYear === desiredYear && currentMonth < desiredMonth)
+          ) {
+            await this.page.click('.datepicker .next');
+          } else {
+            await this.page.click('.datepicker .prev');
+          }
+          await this.page.waitForTimeout(500);
+          header = await this.page.$eval('.datepicker .switch', el => (el.textContent || '').trim());
+          [currentMonthName, currentYearStr] = header.split(' ');
+          currentMonth = englishMonths.indexOf(currentMonthName) + 1;
+          currentYear = Number(currentYearStr);
+          attempts++;
+        }
+        if (!(header.includes(englishMonths[desiredMonth - 1]) && header.includes(String(desiredYear)))) {
+          throw new Error(`Gagal menavigasi ke ${englishMonths[desiredMonth - 1]} ${desiredYear}`);
+        }
+      };
+
+      if (currentYear === desiredYear && currentMonth === desiredMonth) {
+        logger.info("Target bulan sudah tampil di header.");
+        const dayXPath = `//td[not(contains(@class, "old")) and not(contains(@class, "new")) and normalize-space()="${desiredDay}"]`;
+        let dayCell = await this.page.$(dayXPath);
+        if (!dayCell) {
+          logger.info("Sel hari tidak ditemukan di tampilan utama, coba periksa adjacent sel.");
+          const altXPath = `//td[(contains(@class, "old") or contains(@class, "new")) and normalize-space()="${desiredDay}"]`;
+          dayCell = await this.page.waitForSelector(altXPath, { state: 'visible', timeout: DEFAULT_TIMEOUT });
+        }
+        await dayCell.click();
+      } else {
+        let cellXPath = '';
+        let adjacent = false;
+        if (currentYear === desiredYear && currentMonth + 1 === desiredMonth) {
+          cellXPath = `//td[contains(@class, "new") and normalize-space()="${desiredDay}"]`;
+          adjacent = true;
+        }
+        else if (currentYear === desiredYear && currentMonth - 1 === desiredMonth) {
+          cellXPath = `//td[contains(@class, "old") and normalize-space()="${desiredDay}"]`;
+          adjacent = true;
         }
 
-        if (currentYear < desiredYear || (currentYear === desiredYear && currentMonth < desiredMonth)) {
-          const nextButton = await this.page.waitForSelector('.datepicker .next', { state: 'visible', timeout: DEFAULT_TIMEOUT });
-          await nextButton?.click();
+        if (adjacent) {
+          logger.info("Target tanggal terdeteksi sebagai sel adjacent.");
+          const dayCell = await this.page.waitForSelector(cellXPath, { state: 'visible', timeout: DEFAULT_TIMEOUT });
+          await dayCell.click();
         } else {
-          const prevButton = await this.page.waitForSelector('.datepicker .prev', { state: 'visible', timeout: DEFAULT_TIMEOUT });
-          await prevButton?.click();
+          await navigateToTargetHeader();
+          cellXPath = `//td[not(contains(@class, "old")) and not(contains(@class, "new")) and normalize-space()="${desiredDay}"]`;
+          logger.info(`Mencari sel hari setelah navigasi dengan XPath: ${cellXPath}`);
+          const dayCell = await this.page.waitForSelector(cellXPath, { state: 'visible', timeout: DEFAULT_TIMEOUT });
+          await dayCell.click();
         }
-        attempts++;
-        await this.page.waitForTimeout(500);
       }
-
-      const dayCell = await this.page.waitForSelector(
-        `//td[not(contains(@class, "old")) and not(contains(@class, "new")) and normalize-space()="${desiredDay}"]`,
-        { state: 'visible', timeout: DEFAULT_TIMEOUT }
-      );
-      await dayCell?.click();
 
       await this.page.waitForLoadState('networkidle');
       logger.info(`Tanggal ${date} telah dipilih.`);
