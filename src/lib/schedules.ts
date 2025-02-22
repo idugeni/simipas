@@ -1,5 +1,5 @@
 // src/schedules.ts
-import { JournalEntry, ShiftSchedule } from '@/lib/types';
+import { ShiftSchedule } from '@/lib/types';  // Remove unused JournalEntry import
 import { CONFIG } from '@/lib/config';
 
 export const SHIFT_SCHEDULES: ShiftSchedule = {

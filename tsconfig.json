@@ -1,21 +1,25 @@
 {
-    "compilerOptions": {
-      "target": "ESNext",
-      "module": "CommonJS",
-      "strict": true,
-      "esModuleInterop": true,
-      "skipLibCheck": true,
-      "outDir": "./dist",
-      "rootDir": "./src",
-      "baseUrl": "./src",
-      "paths": {
-        "@/*": ["*"],
-        "@lib/*": ["lib/*"]
-      }
-    },
-    "exclude": [
-      "node_modules",
-      "dist",
-      "build"
-    ]
-  }
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"],
+      "@lib/*": ["lib/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist", "build", "*.config.mjs"]
+}
