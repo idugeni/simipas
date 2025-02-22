@@ -4,13 +4,12 @@
   "description": "SIMIPAS adalah tool untuk mengisi jurnal harian SIMPEG KEMENIMIPAS secara otomatis.",
   "main": "src/app/index.ts",
   "scripts": {
-    "start": "node -r dotenv/config -r tsconfig-paths/register dist/app/index.js",
-    "dev": "ts-node -r dotenv/config -r tsconfig-paths/register src/app/index.ts",
+    "start": "ts-node -r dotenv/config -r tsconfig-paths/register dist/app/index.js",
+    "dev": "ts-node-dev -r dotenv/config -r tsconfig-paths/register src/app/index.ts",
     "build": "tsc",
-    "lint": "eslint . --ext .ts --cache",
-    "lint:fix": "eslint . --ext .ts --cache --fix",
-    "format": "prettier --write \"src/**/*.{ts,tsx,json,md}\"",
-    "check": "tsc --noEmit && npm run lint"
+    "lint": "eslint 'src/**/*.{ts,tsx}' --cache",
+    "format": "prettier --write 'src/**/*.{ts,tsx,json,md}'",
+    "check": "npm run lint && npm run format"
   },
   "keywords": [
     "SIMPEG",
@@ -31,8 +30,7 @@
   },
   "homepage": "https://github.com/idugeni/simipas",
   "dependencies": {
-    "@types/node": "^22.13.4",
-    "chalk": "^5.4.1",
+    "@types/node": "^22.13.5",
     "dotenv": "^16.4.7",
     "playwright": "^1.50.1",
     "ts-node": "^10.9.2",
@@ -40,14 +38,15 @@
     "winston": "^3.17.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.20.0",
+    "@eslint/js": "^9.21.0",
     "@typescript-eslint/eslint-plugin": "^8.24.1",
     "@typescript-eslint/parser": "^8.24.1",
-    "eslint": "^9.20.1",
+    "eslint": "^9.21.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.3",
     "globals": "^16.0.0",
     "prettier": "^3.5.1",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.24.1"
   }
