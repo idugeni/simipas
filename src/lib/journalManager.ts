@@ -1,11 +1,10 @@
-// src/lib/journalManager.ts
 import { Page } from 'playwright';
 import logger from '@/lib/logger';
 import { JournalEntry } from '@/lib/types';
 import { DEFAULT_TIMEOUT } from '@/lib/constants';
 
 export class JournalManager {
-  constructor(private page: Page) {}
+  constructor(private page: Page) { }
 
   async navigateToJournal(): Promise<void> {
     logger.info('Navigasi menuju halaman Jurnal Harian.');
@@ -48,11 +47,42 @@ export class JournalManager {
       });
       await this.page.waitForLoadState('networkidle');
 
-      const dateCell = await this.page.waitForSelector(`//td[normalize-space()="${date.split('/')[0]}"]`, {
-        state: 'visible',
-        timeout: DEFAULT_TIMEOUT
-      });
-      await dateCell?.click();
+      const [day, month, year] = date.split('/');
+      const desiredDay = day;
+      const desiredMonth = Number(month);
+      const desiredYear = Number(year);
+
+      let attempts = 0;
+      const englishMonths = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];
+      while (attempts < 12) {
+        const currentMonthYear = await this.page.$eval('.datepicker .datepicker-switch', el => el.textContent?.trim() || '');
+        const [currentMonthName, currentYearStr] = currentMonthYear.split(' ');
+        const currentYear = Number(currentYearStr);
+        const currentMonth = englishMonths.indexOf(currentMonthName) + 1;
+
+        if (currentYear === desiredYear && currentMonth === desiredMonth) {
+          break;
+        }
+
+        if (currentYear < desiredYear || (currentYear === desiredYear && currentMonth < desiredMonth)) {
+          const nextButton = await this.page.waitForSelector('.datepicker .next', { state: 'visible', timeout: DEFAULT_TIMEOUT });
+          await nextButton?.click();
+        } else {
+          const prevButton = await this.page.waitForSelector('.datepicker .prev', { state: 'visible', timeout: DEFAULT_TIMEOUT });
+          await prevButton?.click();
+        }
+        attempts++;
+        await this.page.waitForTimeout(500);
+      }
+
+      const dayCell = await this.page.waitForSelector(
+        `//td[not(contains(@class, "old")) and not(contains(@class, "new")) and normalize-space()="${desiredDay}"]`,
+        { state: 'visible', timeout: DEFAULT_TIMEOUT }
+      );
+      await dayCell?.click();
 
       await this.page.waitForLoadState('networkidle');
       logger.info(`Tanggal ${date} telah dipilih.`);

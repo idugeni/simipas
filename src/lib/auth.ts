@@ -4,7 +4,7 @@ import { CONFIG } from '@/lib/config';
 import logger from '@/lib/logger';
 
 export class Auth {
-  constructor(private page: Page) {}
+  constructor(private page: Page) { }
 
   async login(): Promise<void> {
     logger.info('Memulai proses login.');

@@ -1,4 +1,3 @@
-// src/lib/userInterface.ts
 import { createReadlineInterface, askQuestion } from '@/lib/utils';
 import logger from '@/lib/logger';
 import { UserInput } from '@/lib/types';
@@ -7,10 +6,16 @@ export class UserInterface {
   static async getUserInput(): Promise<UserInput> {
     logger.info('Meminta input pengguna untuk tanggal dan jenis shift jurnal harian.');
 
-    const date = await this.getDateInput();
     const shiftType = await this.getShiftInput();
 
-    return { date, shiftType };
+    if (shiftType === 'ALL') {
+      const startDate = await this.getStartDateInput();
+      const endDate = await this.getEndDateInput();
+      return { shiftType, startDate, endDate };
+    } else {
+      const date = await this.getDateInput();
+      return { date, shiftType };
+    }
   }
 
   private static async getDateInput(): Promise<string> {
@@ -21,20 +26,35 @@ export class UserInterface {
     return date;
   }
 
-  private static async getShiftInput(): Promise<'Siang' | 'PagiMalam' | 'LepasMalam'> {
+  private static async getStartDateInput(): Promise<string> {
+    const startRl = createReadlineInterface();
+    const startDate = await askQuestion(startRl, 'Masukkan tanggal mulai (DD/MM/YYYY): ');
+    logger.info(`Input tanggal mulai diterima: ${startDate}`);
+    startRl.close();
+    return startDate;
+  }
+
+  private static async getEndDateInput(): Promise<string> {
+    const endRl = createReadlineInterface();
+    const endDate = await askQuestion(endRl, 'Masukkan tanggal berakhir (DD/MM/YYYY): ');
+    logger.info(`Input tanggal berakhir diterima: ${endDate}`);
+    endRl.close();
+    return endDate;
+  }
+
+  private static async getShiftInput(): Promise<'Siang' | 'PagiMalam' | 'LepasMalam' | 'ALL'> {
     const shiftRl = createReadlineInterface();
-    logger.info('\nPilih jenis shift:\n1. Shift Siang\n2. Shift Pagi dan Malam\n3. Lepas Piket Malam');
-    const shiftAnswer = await askQuestion(shiftRl, 'Masukkan nomor pilihan (1-3): ');
+    logger.info('\nPilih Shift:\n1. Shift Siang\n2. Shift Pagi dan Malam\n3. Lepas Piket Malam\n4. Semua Jadwal (SPM)');
+    const shiftAnswer = await askQuestion(shiftRl, 'Masukkan nomor pilihan (1-4): ');
     shiftRl.close();
 
-    switch (shiftAnswer) {
-      case '1': return 'Siang';
-      case '2': return 'PagiMalam';
-      case '3': return 'LepasMalam';
-      default:
-        logger.warn('Input tidak valid, menggunakan default: Shift Siang');
-        return 'Siang';
-    }
+    if (shiftAnswer === '1') return 'Siang';
+    if (shiftAnswer === '2') return 'PagiMalam';
+    if (shiftAnswer === '3') return 'LepasMalam';
+    if (shiftAnswer === '4') return 'ALL';
+
+    logger.error('Input tidak valid. Silakan coba lagi.');
+    return this.getShiftInput();
   }
 
   static async askToContinue(message: string): Promise<boolean> {

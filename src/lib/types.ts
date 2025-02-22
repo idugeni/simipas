@@ -1,4 +1,3 @@
-// src/lib/types.ts
 export interface JournalEntry {
   startTime: string;
   endTime: string;
@@ -7,13 +6,15 @@ export interface JournalEntry {
   quantity: number;
 }
 
+export type ShiftType = 'Siang' | 'PagiMalam' | 'LepasMalam' | 'ALL';
+
 export interface UserInput {
-  date: string;
+  date?: string;
   shiftType: ShiftType;
+  startDate?: string;
+  endDate?: string;
 }
 
-export type ShiftType = 'Siang' | 'PagiMalam' | 'LepasMalam';
-
 export type ShiftSchedule = {
-  [key in ShiftType]: JournalEntry[];
+  [key in Exclude<ShiftType, 'ALL'>]: JournalEntry[];
 };

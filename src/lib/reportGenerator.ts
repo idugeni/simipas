@@ -1,4 +1,3 @@
-// src/lib/reportGenerator.ts
 import logger from '@/lib/logger';
 import { MONTH_NAMES, SHIFT_NAMES } from '@/lib/constants';
 import { UserInput } from '@/lib/types';
@@ -10,20 +9,18 @@ export class ReportGenerator {
     entriesCount: number
   ): void {
     const duration = ((Date.now() - startTime) / 1000).toFixed(2);
-    const formattedDate = this.formatDate(input.date);
-    const shiftName = SHIFT_NAMES[input.shiftType];
+    let formattedDate: string;
+    let shiftName: string;
 
-    logger.info('┌────────────────────────────────────────┐');
-    logger.info(`│ Pengisian jurnal berhasil dilakukan:   │`);
-    logger.info('│────────────────────────────────────────│');
-    logger.info(`│ Tanggal     : ${formattedDate}         │`);
-    logger.info('│────────────────────────────────────────│');
-    logger.info(`│ Shift       : ${shiftName}             │`);
-    logger.info('│────────────────────────────────────────│');
-    logger.info(`│ Durasi      : ${duration} detik        │`);
-    logger.info('│────────────────────────────────────────│');
-    logger.info(`│ Total Entry : ${entriesCount} kegiatan │`);
-    logger.info('└────────────────────────────────────────┘');    
+    if (input.shiftType === 'ALL') {
+      formattedDate = `${this.formatDate(input.startDate!)} - ${this.formatDate(input.endDate!)}`;
+      shiftName = 'Semua Shift';
+    } else {
+      formattedDate = this.formatDate(input.date!);
+      shiftName = SHIFT_NAMES[input.shiftType];
+    }
+
+    logger.info(`Pengisian jurnal berhasil dilakukan pada tanggal ${formattedDate} untuk ${shiftName}, selama ${duration} detik, dan mencatat ${entriesCount} kegiatan.`);
   }
 
   private static formatDate(date: string): string {
