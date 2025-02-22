@@ -12,7 +12,7 @@
 SIMIPAS adalah tool untuk mengisi jurnal harian SIMPEG KEMENIMIPAS secara otomatis. Project ini dirancang untuk meningkatkan efisiensi kerja melalui otomasi, sehingga pengguna bisa fokus pada hal-hal yang lebih penting.
 
 > **Disclaimer:** Aplikasi ini dibuat sesuai dengan `SKP TAHUNAN` dan `JURNAL HARIAN` sesuai dengan bagian dari pekerjaan saya selaku pembuat script yaitu di `Pengamanan Pintu Utama (P2U)`.
-
+>
 > Anda dapat mengembangkan sendiri sesuai dengan bagian anda masing-masing, dibutuhkan pengetahuan tentang `Backend`.
 
 ## 📌 Table of Contents
@@ -63,45 +63,93 @@ SIMIPAS merupakan alat otomatisasi yang diciptakan khusus untuk memudahkan pengi
    yarn install
    ```
 
-3. **Ubah `NIP` dan `PASSWORD`**
+3. **BUAT FILE `.env`**
 
    ```bash
-   // src/config.ts
-
-   export const CONFIG = {
-     url: 'https://simpeg.kemenimipas.go.id/devp/siap/signin.php',
-     credentials: {
-       nip: '<nip>',
-       password: '<password>'
-     },
-     taskDescriptions: {
-       option1: 'Melaksanakan koordinasi dengan Kepala Regu Pengamanan untuk mengidentifikasi dan mengevaluasi potensi risiko keamanan, serta menyampaikan informasi terkait potensi ancaman dan menerima arahan demi peningkatan keamanan.',
-       option2: 'Melaksanakan serangkaian tugas pengamanan dan pengawasan di area Pintu Utama, termasuk verifikasi identitas pengunjung, penggeledahan badan dan barang bawaan, pemantauan CCTV, penanganan tamu khusus, patroli keamanan area P2U, dan pelaporan kejadian mencurigakan atau pelanggaran peraturan, guna memastikan keamanan, ketertiban, dan mencegah masuknya barang terlarang atau orang yang tidak berkepentingan.'
-     }
-   };
+   SIMPEG_URL=
+   SIMPEG_NIP=
+   SIMPEG_PASSWORD=
    ```
 
 ## ▶️ Usage
 
-### Menjalankan Aplikasi
+Pastikan semua dependensi telah terinstal dengan benar sebelum menjalankan perintah-perintah berikut.
 
-Untuk menjalankan aplikasi, gunakan perintah berikut:
+### 1. Menjalankan Aplikasi
+
+- **Pengembangan (Development):**  
+  Jalankan aplikasi dalam mode pengembangan dengan perintah berikut:
+
+  ```bash
+  npm run dev
+  ```
+
+  Perintah ini akan menjalankan file `src/app/index.ts` menggunakan `ts-node-dev` dengan konfigurasi tambahan `dotenv/config` dan `tsconfig-paths/register`.
+
+- **Produksi (Start):**  
+  Sebelum menjalankan aplikasi dalam mode produksi, pastikan sudah melakukan build dengan perintah:
+
+  ```bash
+  npm run build
+  ```
+
+  Setelah build selesai, jalankan aplikasi dengan:
+
+  ```bash
+  npm start
+  ```
+
+  Perintah ini akan menjalankan file `dist/app/index.js` menggunakan `ts-node` dengan konfigurasi yang sama.
+
+### 2. Build Aplikasi
+
+Untuk mengkompilasi kode TypeScript ke JavaScript, gunakan perintah:
 
 ```bash
-npm start
+npm run build
 ```
 
-Perintah ini akan menjalankan file `src/app/index.ts` menggunakan ts-node.
+Hasil kompilasi akan tersimpan di folder `dist`.
 
-### Build Aplikasi
+### 3. Perintah Pendukung Lainnya
 
-Jika ingin meng-compile kode TypeScript ke JavaScript, jalankan:
+- **Linting:**  
+  Cek kualitas kode dengan:
+  
+  ```bash
+  npm run lint
+  ```
+
+- **Linting dan Perbaikan Otomatis:**  
+  Perbaiki masalah kode secara otomatis dengan:
+
+  ```bash
+  npm run lint:fix
+  ```
+
+- **Format Kode:**  
+  Format seluruh kode sumber dengan Prettier:
+
+  ```bash
+  npm run format
+  ```
+
+- **Cek Kode (Build + Lint):**  
+  Pastikan kode bebas dari error dengan:
+
+  ```bash
+  npm run check
+  ```
+
+### 4. Catatan Penting
+
+Jika browser tidak muncul saat menjalankan aplikasi, pastikan untuk menginstal dependensi Playwright dengan perintah:
 
 ```bash
-npx tsc
+npx playwright install
 ```
 
-Hasil build akan tersimpan di folder `dist`.
+Hal ini diperlukan karena aplikasi menggunakan pustaka **Playwright** untuk pengujian otomatisasi browser.
 
 ## 📁 Project Structure
 
@@ -109,18 +157,30 @@ Hasil build akan tersimpan di folder `dist`.
 simipas/
 ├── src/
 │   ├── lib/
+│   │   ├── auth               # Modul untuk otentikasi
 │   │   ├── automation.ts      # Logika otomasi pengisian jurnal
+│   │   ├── browser            # Modul untuk browser
+│   │   ├── config             # Konfigurasi aplikasi
+│   │   ├── constants          # Konstanta yang digunakan
+│   │   ├── journalManager     # Manajemen jurnal
+│   │   ├── logger             # Modul untuk logging
+│   │   ├── reportGenerator    # Fungsi untuk menghasilkan laporan
 │   │   ├── schedules.ts       # Pengaturan jadwal tugas otomatis
 │   │   ├── types.ts           # Tipe data dan interface yang digunakan
+│   │   ├── userInterface      # Modul untuk user interface
 │   │   └── utils.ts           # Fungsi utilitas pendukung
 │   └── app/
 │       └── index.ts           # Entry point aplikasi
+├── .env                       # File konfigurasi environment
+├── .eslinttrc.json            # Konfigurasi ESLint
 ├── .gitignore                 # Daftar file/folder yang diabaikan oleh Git
+├── .prettierrc                # Konfigurasi Prettier
+├── eslint.config.mjs          # Konfigurasi ESLint
+├── LICENCE                    # Lisensi proyek
 ├── package-lock.json          # Lock file npm
 ├── package.json               # Konfigurasi project dan dependensi
 ├── README.md                  # Dokumentasi project
 └── tsconfig.json              # Konfigurasi TypeScript
-```
 
 ## 🤝 Contributing
 
