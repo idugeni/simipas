@@ -13,17 +13,17 @@ export class ReportGenerator {
     const formattedDate = this.formatDate(input.date);
     const shiftName = SHIFT_NAMES[input.shiftType];
 
-    logger.info('┌───────────────────────────────────────────────');
-    logger.info(`│ Pengisian jurnal berhasil dilakukan:          `);
-    logger.info('│───────────────────────────────────────────────');
-    logger.info(`│ Tanggal     : ${formattedDate}                `);
-    logger.info('│───────────────────────────────────────────────');
-    logger.info(`│ Shift       : ${shiftName}                    `);
-    logger.info('│───────────────────────────────────────────────');
-    logger.info(`│ Durasi      : ${duration} detik               `);
-    logger.info('│───────────────────────────────────────────────');
-    logger.info(`│ Total Entry : ${entriesCount} kegiatan        `);
-    logger.info('└───────────────────────────────────────────────');
+    logger.info('┌────────────────────────────────────────┐');
+    logger.info(`│ Pengisian jurnal berhasil dilakukan:   │`);
+    logger.info('│────────────────────────────────────────│');
+    logger.info(`│ Tanggal     : ${formattedDate}         │`);
+    logger.info('│────────────────────────────────────────│');
+    logger.info(`│ Shift       : ${shiftName}             │`);
+    logger.info('│────────────────────────────────────────│');
+    logger.info(`│ Durasi      : ${duration} detik        │`);
+    logger.info('│────────────────────────────────────────│');
+    logger.info(`│ Total Entry : ${entriesCount} kegiatan │`);
+    logger.info('└────────────────────────────────────────┘');    
   }
 
   private static formatDate(date: string): string {

@@ -1,5 +1,4 @@
 import winston from "winston";
-import chalk from "chalk";
 
 const logger = winston.createLogger({
   level: "info",
@@ -10,9 +9,8 @@ const logger = winston.createLogger({
       const ts = timestamp as string;
       const [date, time] = ts.split(" ");
       const customLevel = level === "info" ? "SIMIPAS" : level;
-      return `${chalk.bold.blue(`[${date}] - [${time}]`)} ${customLevel}: ${message}`;
-    }),
-    winston.format.colorize({ all: true }),
+      return `[${date}] - [${time}] ${customLevel}: ${message}`;
+    })
   ),
   transports: [new winston.transports.Console()],
 });
