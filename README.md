@@ -181,6 +181,7 @@ simipas/
 ├── package.json               # Konfigurasi project dan dependensi
 ├── README.md                  # Dokumentasi project
 └── tsconfig.json              # Konfigurasi TypeScript
+```
 
 ## 🤝 Contributing
 
