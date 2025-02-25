@@ -1,5 +1,5 @@
 // src/lib/constants.ts
-export const DEFAULT_TIMEOUT = 10000;
+export const DEFAULT_TIMEOUT = 30000;
 
 export const MONTH_NAMES = [
   'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',

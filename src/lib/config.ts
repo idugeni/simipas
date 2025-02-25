@@ -11,11 +11,11 @@ export const CONFIG = {
   taskDescriptions
 };
 
-logger.info(`Informasi URL SIMPEG: ${CONFIG.url ? 'berhasil dimuat.' : 'gagal dimuat.'}`);
-logger.info(`Informasi NIP: ${CONFIG.credentials.nip ? 'berhasil dimuat.' : 'gagal dimuat.'}`);
-logger.info(`Informasi Password: ${CONFIG.credentials.password ? 'berhasil dimuat.' : 'gagal dimuat.'}`);
+logger.info(`URL SIMPEG ${CONFIG.url ? 'berhasil dimuat' : 'gagal dimuat'}.`);
+logger.info(`NIP ${CONFIG.credentials.nip ? 'berhasil dimuat' : 'gagal dimuat'}.`);
+logger.info(`Password ${CONFIG.credentials.password ? 'berhasil dimuat' : 'gagal dimuat'}.`);
 
 if (!CONFIG.url || !CONFIG.credentials.nip || !CONFIG.credentials.password) {
-  logger.error('Kesalahan: Variabel lingkungan tidak terbaca. Pastikan file .env telah dikonfigurasi dengan benar.');
+  logger.error('Variabel lingkungan tidak terbaca. Pastikan file .env telah dikonfigurasi dengan benar.');
   process.exit(1);
 }

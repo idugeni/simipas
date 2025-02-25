@@ -20,7 +20,7 @@ export class ReportGenerator {
       shiftName = SHIFT_NAMES[input.shiftType];
     }
 
-    logger.info(`Pengisian jurnal berhasil dilakukan pada tanggal ${formattedDate} untuk ${shiftName}, selama ${duration} detik, dan mencatat ${entriesCount} kegiatan.`);
+    logger.info(`Pengisian jurnal berhasil dilakukan dengan rentang tanggal ${formattedDate} untuk ${shiftName}, selama ${duration} detik, dan mencatat ${entriesCount} kegiatan.`);
   }
 
   private static formatDate(date: string): string {
