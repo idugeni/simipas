@@ -70,7 +70,7 @@ SIMIPAS merupakan alat otomatisasi yang diciptakan khusus untuk memudahkan pengi
    yarn install
    ```
 
-3. **BUAT FILE `.env.local`** untuk menyimpan konfigurasi aplikasi
+3. **BUAT FILE `.env`** untuk menyimpan konfigurasi aplikasi
 
    ```bash
    SIMPEG_URL=
