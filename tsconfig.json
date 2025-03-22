@@ -13,14 +13,19 @@
     "noFallthroughCasesInSwitch": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "incremental": true,
+    "removeComments": false,
     "outDir": "./dist",
     "rootDir": "./src",
     "baseUrl": "./src",
     "paths": {
       "@/*": ["*"],
-      "@lib/*": ["lib/*"],
-      "@data/*": ["data/*"],
-      "@config/*": ["config/*"]
+      "@/lib/*": ["lib/*"],
+      "@/data/*": ["data/*"],
+      "@/config/*": ["config/*"]
     }
   },
   "include": ["src/**/*"],
