@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "jsx": "react-jsx",
+    "target": "ES2021",
+    "module": "CommonJS",
+    "moduleResolution": "node",
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -14,20 +15,26 @@
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
+    "declaration": false,
+    "declarationMap": false,
     "incremental": true,
     "removeComments": false,
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "baseUrl": "./src",
+    "outDir": "dist",
+    "rootDir": "src",
+    "baseUrl": ".",
     "paths": {
       "@/*": ["*"],
+      "@/app/*": ["app/*"],
       "@/lib/*": ["lib/*"],
       "@/data/*": ["data/*"],
       "@/config/*": ["config/*"]
     }
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "build", "*.config.mjs"]
+  "exclude": ["node_modules", "dist", "build"],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  }
 }

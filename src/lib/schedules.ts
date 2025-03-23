@@ -1,6 +1,6 @@
 // src/schedules.ts
-import { ShiftSchedule } from '@/lib/types';
-import { CONFIG } from '@/lib/config';
+import { ShiftSchedule } from './types';
+import { CONFIG } from './config';
 
 export const SHIFT_SCHEDULES: ShiftSchedule = {
     Siang: [

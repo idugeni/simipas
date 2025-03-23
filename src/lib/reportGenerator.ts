@@ -1,6 +1,6 @@
-import logger from '@/lib/logger';
-import { MONTH_NAMES, SHIFT_NAMES } from '@/lib/constants';
-import { UserInput } from '@/lib/types';
+import logger from './logger';
+import { MONTH_NAMES, SHIFT_NAMES } from './constants';
+import { UserInput } from './types';
 
 export class ReportGenerator {
   static generateCompletionReport(

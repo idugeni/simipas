@@ -1,7 +1,7 @@
 // src/lib/browser.ts
 import { chromium, Page } from 'playwright';
-import logger from '@/lib/logger';
-import { DEFAULT_TIMEOUT } from '@/lib/constants';
+import logger from './logger';
+import { DEFAULT_TIMEOUT } from './constants';
 
 export class BrowserManager {
   private page: Page | null = null;

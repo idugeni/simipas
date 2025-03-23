@@ -1,6 +1,6 @@
 import 'dotenv/config';
-import logger from '@/lib/logger';
-import taskDescriptions from '@/data/tasks.json';
+import logger from './logger';
+import taskDescriptions from '../data/tasks.json';
 
 export const CONFIG = {
   url: process.env.SIMPEG_URL || '',

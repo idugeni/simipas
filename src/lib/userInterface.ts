@@ -1,6 +1,6 @@
-import { createReadlineInterface, askQuestion } from '@/lib/utils';
-import logger from '@/lib/logger';
-import { UserInput } from '@/lib/types';
+import { createReadlineInterface, askQuestion } from './utils';
+import logger from './logger';
+import { UserInput } from './types';
 
 export class UserInterface {
   static async getUserInput(): Promise<UserInput> {

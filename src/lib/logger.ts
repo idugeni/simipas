@@ -1,15 +1,5 @@
 import winston from "winston";
-
-const colorMapping: Record<string, string> = {
-  info: "\x1b[32m",
-  warn: "\x1b[33m",
-  error: "\x1b[31m",
-  debug: "\x1b[36m",
-};
-
-const dateColor = "\x1b[36m";
-const timeColor = "\x1b[35m";
-const resetColor = "\x1b[0m";
+import { BrowserWindow } from 'electron';
 
 const logger = winston.createLogger({
   level: "info",
@@ -17,8 +7,20 @@ const logger = winston.createLogger({
     winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
     winston.format.printf(({ timestamp, level, message }) => {
       const [date, time] = (timestamp as string).split(" ");
-      const levelColor = colorMapping[level.toLowerCase()] || "";
-      return `${dateColor}[${date}]${resetColor} - ${timeColor}[${time}]${resetColor} ${levelColor}SIMIPAS${resetColor}: ${message}`;
+      const formattedLevel = level.toUpperCase();
+      const logMessage = `[${date}] - [${time}] [${formattedLevel}] SIMIPAS: ${message}`;
+      
+      // Send log to renderer process with formatted level and timestamp
+      const windows = BrowserWindow.getAllWindows();
+      windows.forEach(window => {
+        window.webContents.send('log-message', {
+          timestamp: `${date} ${time}`,
+          level: formattedLevel,
+          message: message // Send original message for better display in GUI
+        });
+      });
+
+      return logMessage;
     })
   ),
   transports: [new winston.transports.Console()],

@@ -1,7 +1,7 @@
 // src/lib/auth.ts
 import { Page } from 'playwright';
-import { CONFIG } from '@/lib/config';
-import logger from '@/lib/logger';
+import { CONFIG } from './config';
+import logger from './logger';
 
 export class Auth {
   constructor(private page: Page) { }

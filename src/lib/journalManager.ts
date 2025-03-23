@@ -1,7 +1,7 @@
 import { Page } from 'playwright';
-import logger from '@/lib/logger';
-import { JournalEntry } from '@/lib/types';
-import { DEFAULT_TIMEOUT } from '@/lib/constants';
+import logger from './logger';
+import { JournalEntry } from './types';
+import { DEFAULT_TIMEOUT } from './constants';
 
 export class JournalManager {
   constructor(private page: Page) { }

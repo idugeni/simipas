@@ -1,10 +1,14 @@
 // src/index.ts
-import { SimpegAutomation } from '@/lib/automation';
-import logger from '@/lib/logger';
+import { SimpegAutomation } from '../lib/automation';
+import logger from '../lib/logger';
+import { UserInput } from '../lib/types';
 
 async function main() {
   const automation = new SimpegAutomation();
-  await automation.run();
+  const userInput: UserInput = {
+    shiftType: 'ALL'
+  };
+  await automation.run(userInput);
 }
 
 main().catch(error => {

@@ -1,7 +1,7 @@
 // src/lib/logout.ts
 import { Page } from 'playwright';
-import { DEFAULT_TIMEOUT } from '@/lib/constants';
-import logger from '@/lib/logger';
+import { DEFAULT_TIMEOUT } from './constants';
+import logger from './logger';
 
 export async function doLogout(page: Page): Promise<void> {
   try {
