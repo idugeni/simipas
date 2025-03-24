@@ -1,21 +1,15 @@
-import 'dotenv/config';
-import logger from './logger';
-import taskDescriptions from '../data/tasks.json';
+import "dotenv/config";
+import logger from "./logger";
 
 export const CONFIG = {
-  url: process.env.SIMPEG_URL || '',
-  credentials: {
-    nip: process.env.SIMPEG_NIP || '',
-    password: process.env.SIMPEG_PASSWORD || ''
-  },
-  taskDescriptions
+  url: process.env.SIMPEG_URL || "",
 };
 
-logger.info(`URL SIMPEG ${CONFIG.url ? 'berhasil dimuat' : 'gagal dimuat'}.`);
-logger.info(`NIP ${CONFIG.credentials.nip ? 'berhasil dimuat' : 'gagal dimuat'}.`);
-logger.info(`Password ${CONFIG.credentials.password ? 'berhasil dimuat' : 'gagal dimuat'}.`);
+logger.info(`URL SIMPEG ${CONFIG.url ? "berhasil dimuat" : "gagal dimuat"}.`);
 
-if (!CONFIG.url || !CONFIG.credentials.nip || !CONFIG.credentials.password) {
-  logger.error('Variabel lingkungan tidak terbaca. Pastikan file .env telah dikonfigurasi dengan benar.');
+if (!CONFIG.url) {
+  logger.error(
+    "URL SIMPEG tidak terbaca. Pastikan file .env telah dikonfigurasi dengan benar.",
+  );
   process.exit(1);
 }

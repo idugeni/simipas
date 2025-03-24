@@ -1,46 +1,59 @@
 // src/lib/auth.ts
-import { Page } from 'playwright';
-import { CONFIG } from './config';
-import logger from './logger';
+import { Page } from "playwright";
+import logger from "./logger";
+import { dbManager } from "./database";
 
 export class Auth {
-  constructor(private page: Page) { }
+  private page: Page;
+  private currentUser: {
+    nip: string;
+    password: string;
+    userType: "PENGAMANAN" | "STAFF ADMINISTRASI";
+  } | null = null;
 
-  async login(): Promise<void> {
-    logger.info('Memulai proses login.');
+  constructor(page: Page) {
+    this.page = page;
+  }
+
+  async login(nip?: string, password?: string) {
     try {
-      await this.page.goto(CONFIG.url);
-      logger.info('Berhasil membuka URL login.');
+      let user;
+      if (!nip || !password) {
+        const users = dbManager.getAllUsers();
+        if (users.length === 0) {
+          throw new Error("Tidak ada pengguna yang terdaftar dalam database");
+        }
+        // Gunakan user pertama sebagai default
+        user = users[0];
+        nip = user.nip;
+        password = user.password;
+      } else {
+        user = dbManager.getUserByNip(nip);
+        if (!user || user.password !== password) {
+          throw new Error("NIP atau password tidak valid");
+        }
+      }
 
-      await this.fillCredentials();
-      await this.submitLogin();
-      logger.info('Login berhasil, halaman utama dimuat.');
+      await this.page.goto(
+        "https://simpeg.kemenimipas.go.id/devp/siap/signin.php",
+      );
+      await this.page.fill("#nip", nip);
+      await this.page.fill("#password", password);
+      await this.page.click('button[type="submit"]');
+      await this.page.waitForURL(
+        "https://simpeg.kemenimipas.go.id/devp/siap/index.php",
+      );
+
+      this.currentUser = { nip, password, userType: user.userType };
+      logger.info(`Login berhasil dengan NIP: ${nip}`);
+      return user;
     } catch (error) {
-      logger.error(`Gagal melakukan login: ${error}`);
+      logger.error("Gagal login:", error);
       throw error;
     }
   }
 
-  private async fillCredentials(): Promise<void> {
-    await this.page.waitForSelector('//input[@id="user_nip"]', { state: 'visible' });
-    await this.page.fill('//input[@id="user_nip"]', CONFIG.credentials.nip);
-    logger.info('NIP telah diisi.');
-
-    const loginButton = await this.page.waitForSelector('//div[@class="boxLogin boxShadow"]//input[@id="masuk"]');
-    await loginButton?.click();
-
-    await this.page.waitForSelector('//input[@id="vpassword"]', { state: 'visible' });
-    await this.page.fill('//input[@id="vpassword"]', CONFIG.credentials.password);
-    logger.info('Password telah diisi.');
-  }
-
-  private async submitLogin(): Promise<void> {
-    const submitButton = await this.page.waitForSelector('//button[@id="btnsimpan"]');
-    await submitButton?.click();
-
-    await Promise.all([
-      this.page.waitForURL('**/siap/index_new.php'),
-      this.page.waitForLoadState('networkidle')
-    ]);
+  getCurrentUser() {
+    return this.currentUser;
   }
 }

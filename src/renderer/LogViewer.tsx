@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import './LogViewer.css';
+import React, { useState, useEffect } from "react";
+import "./LogViewer.css";
 
 interface LogMessage {
   timestamp: string;
@@ -12,7 +12,7 @@ const LogViewer: React.FC = () => {
 
   useEffect(() => {
     window.api.onLogMessage((log: LogMessage) => {
-      setLogs(prevLogs => [...prevLogs, log]);
+      setLogs((prevLogs) => [...prevLogs, log]);
     });
   }, []);
 
@@ -21,8 +21,13 @@ const LogViewer: React.FC = () => {
       <h2>Log Output</h2>
       <div className="log-container">
         {logs.map((log, index) => (
-          <div key={index} className={`log-entry log-${log.level.toLowerCase()}`}>
-            {log.message}
+          <div
+            key={index}
+            className={`log-entry log-${log.level.toLowerCase()}`}
+          >
+            <span className="log-timestamp">[{log.timestamp}]</span>
+            <span className="log-level">[{log.level}]</span>
+            <span className="log-message">{log.message}</span>
           </div>
         ))}
       </div>

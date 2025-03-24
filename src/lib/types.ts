@@ -1,3 +1,18 @@
+export type UserType = "PENGAMANAN" | "STAFF ADMINISTRASI";
+
+export interface User {
+  id?: number;
+  fullName: string;
+  nip: string;
+  password: string;
+  userType: UserType;
+  skpkgOption: number;
+  startTime: string;
+  endTime: string;
+  description: string;
+  quantity: number;
+}
+
 export interface JournalEntry {
   startTime: string;
   endTime: string;
@@ -6,15 +21,21 @@ export interface JournalEntry {
   quantity: number;
 }
 
-export type ShiftType = 'Siang' | 'PagiMalam' | 'LepasMalam' | 'ALL';
+export type ShiftType = "ALL" | "Siang" | "PagiMalam" | "LepasMalam";
 
 export interface UserInput {
-  date?: string;
   shiftType: ShiftType;
-  startDate?: string;
-  endDate?: string;
+  date?: string | null;
+  startDate?: string | null;
+  endDate?: string | null;
+}
+
+export interface AutomationResult {
+  success: boolean;
+  result?: { totalEntries: number };
+  error?: string;
 }
 
 export type ShiftSchedule = {
-  [key in Exclude<ShiftType, 'ALL'>]: JournalEntry[];
+  [key in Exclude<ShiftType, "ALL">]: JournalEntry[];
 };

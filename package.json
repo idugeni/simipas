@@ -1,17 +1,18 @@
 {
   "name": "simipas",
-  "version": "0.1.7-alpha",
+  "version": "0.6.5-alpha",
   "description": "SIMIPAS adalah sebuah aplikasi yang digunakan untuk mengotomatisasi proses pengisian jurnal harian pada SIMPEG Kemenimipas.",
   "main": "./dist/main.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development concurrently \"vite\" \"tsc -p tsconfig.electron.json --watch\" \"electron .\"",
     "start": "npm run build && electron .",
     "build": "rimraf dist && tsc -p tsconfig.electron.json && vite build",
-    "lint": "eslint 'src/**/*.{ts,tsx}' --cache",
-    "format": "prettier --write 'src/**/*.{ts,tsx,json,md}'",
+    "lint": "eslint src/**/*.{ts,tsx} --cache",
+    "format": "prettier --write \"src/**/*.{ts,tsx,json,md}\"",
     "check": "npm run lint && npm run format",
     "package": "npm run build && electron-builder build --win --publish never",
-    "clean": "rimraf dist release"
+    "clean": "rimraf dist release",
+    "fix": "eslint --fix src/**/*.{ts,tsx} && prettier --write src/**/*.{ts,tsx,json,md}"
   },
   "keywords": [
     "SIMPEG",
@@ -33,7 +34,9 @@
   "homepage": "https://github.com/idugeni/simipas",
   "dependencies": {
     "@tailwindcss/postcss": "^4.0.15",
-    "@types/node": "^22.13.11",
+    "@types/node": "^22.13.13",
+    "@types/react-router-dom": "^5.3.3",
+    "better-sqlite3": "^11.9.1",
     "dotenv": "^16.4.7",
     "electron": "^35.0.3",
     "electron-builder": "^25.1.8",
@@ -41,11 +44,14 @@
     "postcss": "^8.5.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-icons": "^5.5.0",
+    "react-router-dom": "^7.4.0",
     "tailwindcss": "^4.0.15",
     "ts-node": "^10.9.2",
     "winston": "^3.17.0"
   },
   "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",
     "@typescript-eslint/eslint-plugin": "^8.27.0",
@@ -54,13 +60,14 @@
     "autoprefixer": "^10.4.21",
     "concurrently": "^9.1.2",
     "cross-env": "^7.0.3",
+    "electron-rebuild": "^3.2.9",
     "eslint": "^9.23.0",
     "eslint-config-prettier": "^10.1.1",
-    "eslint-plugin-prettier": "^5.2.3",
+    "eslint-plugin-prettier": "^5.2.4",
     "eslint-plugin-react": "^7.37.4",
     "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
     "typescript": "^5.8.2",
-    "vite": "^6.2.2"
+    "vite": "^6.2.3"
   }
 }
