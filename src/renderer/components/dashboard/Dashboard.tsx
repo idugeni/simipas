@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  FaInfoCircle,
-  FaUser,
-  FaCode,
-  FaGithub,
-  FaCalendarAlt,
-} from "react-icons/fa";
+import { FaInfoCircle, FaCode } from "react-icons/fa";
 import logoPath from "../../../../public/logo.png";
 
 const Dashboard: React.FC = () => {
@@ -50,7 +44,7 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* Version and Info Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div className="bg-white p-6 rounded-xl shadow-md">
           <div className="flex items-center mb-4">
             <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3">
@@ -81,31 +75,6 @@ const Dashboard: React.FC = () => {
         <div className="bg-white p-6 rounded-xl shadow-md">
           <div className="flex items-center mb-4">
             <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3">
-              <FaUser size={20} />
-            </div>
-            <h3 className="text-lg font-semibold text-gray-800">Pengembang</h3>
-          </div>
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span className="text-gray-600">Nama</span>
-              <span className="font-medium">Eliyanto Sarage</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Email</span>
-              <span className="font-medium">eliyanto@example.com</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Website</span>
-              <a href="#" className="text-blue-600 hover:underline">
-                eliyanto.dev
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white p-6 rounded-xl shadow-md">
-          <div className="flex items-center mb-4">
-            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3">
               <FaCode size={20} />
             </div>
             <h3 className="text-lg font-semibold text-gray-800">Teknologi</h3>
@@ -127,58 +96,9 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Features Section */}
-      <div className="bg-white p-6 rounded-xl shadow-md mb-8">
-        <h3 className="text-xl font-semibold text-gray-800 mb-4">
-          Fitur Utama
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="border border-gray-200 rounded-lg p-4">
-            <div className="flex items-center mb-2">
-              <FaUser className="text-blue-600 mr-2" />
-              <h4 className="font-medium">Manajemen User</h4>
-            </div>
-            <p className="text-gray-600 text-sm">
-              Pengelolaan data pengguna dengan fitur tambah, edit, dan hapus
-              user secara mudah.
-            </p>
-          </div>
-          <div className="border border-gray-200 rounded-lg p-4">
-            <div className="flex items-center mb-2">
-              <FaCalendarAlt className="text-blue-600 mr-2" />
-              <h4 className="font-medium">Aktivitas User</h4>
-            </div>
-            <p className="text-gray-600 text-sm">
-              Manajemen aktivitas pengguna terintegrasi dalam pengaturan
-              pengguna.
-            </p>
-          </div>
-          <div className="border border-gray-200 rounded-lg p-4">
-            <div className="flex items-center mb-2">
-              <FaGithub className="text-blue-600 mr-2" />
-              <h4 className="font-medium">Open Source</h4>
-            </div>
-            <p className="text-gray-600 text-sm">
-              Kode sumber terbuka dan dapat dikembangkan lebih lanjut sesuai
-              kebutuhan.
-            </p>
-          </div>
-          <div className="border border-gray-200 rounded-lg p-4">
-            <div className="flex items-center mb-2">
-              <FaInfoCircle className="text-blue-600 mr-2" />
-              <h4 className="font-medium">Log Aplikasi</h4>
-            </div>
-            <p className="text-gray-600 text-sm">
-              Pencatatan aktivitas aplikasi untuk memudahkan pemantauan dan
-              debugging.
-            </p>
-          </div>
-        </div>
-      </div>
-
       {/* Footer Note */}
       <div className="text-center text-gray-500 text-sm mb-8">
-        <p>SIMIPAS 2025 | Dibuat dengan oleh Eliyanto Sarage</p>
+        <p>SIMIPAS 2025 | Dibuat oleh Eliyanto Sarage</p>
       </div>
     </div>
   );
