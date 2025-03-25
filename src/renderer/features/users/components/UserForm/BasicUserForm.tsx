@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { UserType } from "../../../lib/types";
+import { UserType } from "../../../../../lib/types";
 
 export interface BasicUser {
   fullName: string;
@@ -94,7 +94,7 @@ const BasicUserForm: React.FC<BasicUserFormProps> = ({
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
         >
           <option value="PENGAMANAN">Pengamanan</option>
-          <option value="ADMINISTRASI">Staff Administrasi</option>
+          <option value="STAFF ADMINISTRASI">Staff Administrasi</option>
         </select>
       </div>
 

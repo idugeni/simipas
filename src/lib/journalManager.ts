@@ -204,13 +204,16 @@ export class JournalManager {
 
   private async fillEntryDetails(entry: JournalEntry): Promise<void> {
     await this.page.waitForSelector("#skpkgid", { state: "visible" });
-    const skpkgValue = `2025199809216304201_0${entry.skpkgOption}`;
+    // Extract the SKP option from the title or use a default value
+    const skpkgNumber = entry.title.match(/\d+/)?.[0] || "1";
+    const skpkgValue = `2025199809216304201_0${skpkgNumber}`;
     await this.page.selectOption("#skpkgid", skpkgValue);
     await this.page.waitForLoadState("networkidle");
     await this.page.waitForSelector("#keterangan", { state: "visible" });
     await this.page.fill("#keterangan", entry.description);
     await this.page.waitForSelector("#jumlah", { state: "visible" });
-    await this.page.fill("#jumlah", String(entry.quantity));
+    // Use a default quantity of 1 since we no longer store this value
+    await this.page.fill("#jumlah", "1");
   }
 
   private async submitEntry(): Promise<void> {

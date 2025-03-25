@@ -1,24 +1,31 @@
 export type UserType = "PENGAMANAN" | "STAFF ADMINISTRASI";
 
+export interface UserActivity {
+  id?: number;
+  userId?: number;
+  title: string;
+  description: string;
+  startTime: string;
+  endTime: string;
+  status?: string;
+  createdAt?: string;
+}
+
 export interface User {
   id?: number;
   fullName: string;
   nip: string;
   password: string;
   userType: UserType;
-  skpkgOption: number;
-  startTime: string;
-  endTime: string;
-  description: string;
-  quantity: number;
+  activities?: UserActivity[];
 }
 
 export interface JournalEntry {
   startTime: string;
   endTime: string;
-  skpkgOption: number;
+  title: string;
   description: string;
-  quantity: number;
+  status?: string;
 }
 
 export type ShiftType = "ALL" | "Siang" | "PagiMalam" | "LepasMalam";

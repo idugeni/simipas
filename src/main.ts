@@ -3,7 +3,7 @@ import * as path from "path";
 import { SimpegAutomation } from "./lib/automation";
 import logger from "./lib/logger";
 import { DatabaseManager } from "./lib/database";
-import { User } from "./lib/types";
+import { User, UserActivity } from "./lib/types";
 
 let mainWindow: BrowserWindow | null = null;
 const dbManager = new DatabaseManager();
@@ -63,6 +63,57 @@ ipcMain.handle("create-user", async (_, userData: User) => {
     await dbManager.addUser(userData);
   } catch (error) {
     logger.error("Error creating user:", error);
+    throw error;
+  }
+});
+
+// IPC handlers for user activities
+ipcMain.handle("get-user-activities", async (_, nip: string) => {
+  try {
+    return dbManager.getUserActivities(nip);
+  } catch (error) {
+    logger.error("Error getting user activities:", error);
+    throw error;
+  }
+});
+
+ipcMain.handle(
+  "add-user-activity",
+  async (
+    _,
+    nip: string,
+    activityData: Omit<UserActivity, "id" | "userId" | "createdAt">,
+  ) => {
+    try {
+      return dbManager.addUserActivity(nip, activityData as UserActivity);
+    } catch (error) {
+      logger.error("Error adding user activity:", error);
+      throw error;
+    }
+  },
+);
+
+ipcMain.handle(
+  "update-user-activity",
+  async (
+    _,
+    nip: string,
+    activityData: Omit<UserActivity, "userId" | "createdAt">,
+  ) => {
+    try {
+      return dbManager.updateUserActivity(nip, activityData as UserActivity);
+    } catch (error) {
+      logger.error("Error updating user activity:", error);
+      throw error;
+    }
+  },
+);
+
+ipcMain.handle("delete-user-activity", async (_, activityId: number) => {
+  try {
+    return dbManager.deleteUserActivity(activityId);
+  } catch (error) {
+    logger.error("Error deleting user activity:", error);
     throw error;
   }
 });
@@ -138,4 +189,10 @@ ipcMain.handle("run-automation", async (_, userInput) => {
       error: error instanceof Error ? error.message : String(error),
     };
   }
+});
+
+// Handle exit application request
+ipcMain.handle("exit-app", () => {
+  logger.info("Application exit requested");
+  app.quit();
 });

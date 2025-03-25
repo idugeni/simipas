@@ -1,16 +1,7 @@
 import Database from "better-sqlite3";
 import * as path from "path";
 import logger from "./logger";
-
-export type UserType = "PENGAMANAN" | "STAFF ADMINISTRASI";
-
-export interface User {
-  id?: number;
-  fullName: string;
-  nip: string;
-  password: string;
-  userType: UserType;
-}
+import { User, UserActivity } from "./types";
 
 export type ShiftType =
   | "SIANG"
@@ -23,11 +14,11 @@ export type ShiftType =
 export interface UserConfig {
   id?: number;
   userId: number;
-  skpkgOption: number;
+  title: string;
   startTime: string;
   endTime: string;
   description: string;
-  quantity: number;
+  status?: string;
 }
 
 export interface ShiftConfig {
@@ -37,9 +28,9 @@ export interface ShiftConfig {
   startTime: string;
   endTime: string;
   activities: {
-    skpkgOption: number;
+    title: string;
     description: string;
-    quantity: number;
+    status?: string;
   }[];
   isTemplate?: boolean;
   createdAt?: string;
@@ -69,11 +60,11 @@ export class DatabaseManager {
         CREATE TABLE IF NOT EXISTS user_configs (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           userId INTEGER NOT NULL,
-          skpkgOption INTEGER NOT NULL,
+          title TEXT NOT NULL,
           startTime TEXT NOT NULL,
           endTime TEXT NOT NULL,
           description TEXT NOT NULL,
-          quantity INTEGER NOT NULL,
+          status TEXT,
           FOREIGN KEY (userId) REFERENCES users(id)
         );
 
@@ -85,6 +76,18 @@ export class DatabaseManager {
           endTime TEXT NOT NULL,
           activities TEXT NOT NULL,
           isTemplate BOOLEAN DEFAULT 0,
+          createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+          FOREIGN KEY (userId) REFERENCES users(id)
+        );
+        
+        CREATE TABLE IF NOT EXISTS user_activities (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          userId INTEGER NOT NULL,
+          title TEXT NOT NULL,
+          description TEXT NOT NULL,
+          startTime TEXT NOT NULL,
+          endTime TEXT NOT NULL,
+          status TEXT NOT NULL DEFAULT 'pending',
           createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
           FOREIGN KEY (userId) REFERENCES users(id)
         );
@@ -159,15 +162,15 @@ export class DatabaseManager {
   public addUserConfig(config: UserConfig): number {
     try {
       const stmt = this.db.prepare(
-        "INSERT INTO user_configs (userId, skpkgOption, startTime, endTime, description, quantity) VALUES (?, ?, ?, ?, ?, ?)",
+        "INSERT INTO user_configs (userId, title, startTime, endTime, description, status) VALUES (?, ?, ?, ?, ?, ?)",
       );
       const result = stmt.run(
         config.userId,
-        config.skpkgOption,
+        config.title,
         config.startTime,
         config.endTime,
         config.description,
-        config.quantity,
+        config.status,
       );
       return result.lastInsertRowid as number;
     } catch (error) {
@@ -191,14 +194,14 @@ export class DatabaseManager {
   public updateUserConfig(config: UserConfig): void {
     try {
       const stmt = this.db.prepare(
-        "UPDATE user_configs SET skpkgOption = ?, startTime = ?, endTime = ?, description = ?, quantity = ? WHERE id = ?",
+        "UPDATE user_configs SET title = ?, startTime = ?, endTime = ?, description = ?, status = ? WHERE id = ?",
       );
       stmt.run(
-        config.skpkgOption,
+        config.title,
         config.startTime,
         config.endTime,
         config.description,
-        config.quantity,
+        config.status,
         config.id,
       );
     } catch (error) {
@@ -293,6 +296,87 @@ export class DatabaseManager {
       stmt.run(configId);
     } catch (error) {
       logger.error("Error deleting shift config:", error);
+      throw error;
+    }
+  }
+
+  // User Activities Methods
+  public getUserActivities(nip: string): UserActivity[] {
+    try {
+      // First get the user ID from nip
+      const user = this.getUserByNip(nip);
+      if (!user || !user.id) {
+        throw new Error(`User with NIP ${nip} not found`);
+      }
+
+      const stmt = this.db.prepare(
+        "SELECT * FROM user_activities WHERE userId = ? ORDER BY createdAt DESC",
+      );
+      return stmt.all(user.id) as UserActivity[];
+    } catch (error) {
+      logger.error("Error getting user activities:", error);
+      throw error;
+    }
+  }
+
+  public addUserActivity(nip: string, activity: UserActivity): number {
+    try {
+      // First get the user ID from nip
+      const user = this.getUserByNip(nip);
+      if (!user || !user.id) {
+        throw new Error(`User with NIP ${nip} not found`);
+      }
+
+      const stmt = this.db.prepare(
+        "INSERT INTO user_activities (userId, title, description, startTime, endTime, status) VALUES (?, ?, ?, ?, ?, ?)",
+      );
+      const result = stmt.run(
+        user.id,
+        activity.title,
+        activity.description,
+        activity.startTime,
+        activity.endTime,
+        activity.status || "pending",
+      );
+      return result.lastInsertRowid as number;
+    } catch (error) {
+      logger.error("Error adding user activity:", error);
+      throw error;
+    }
+  }
+
+  public updateUserActivity(nip: string, activity: UserActivity): void {
+    try {
+      // First check if the user exists
+      const user = this.getUserByNip(nip);
+      if (!user) {
+        throw new Error(`User with NIP ${nip} not found`);
+      }
+
+      // Then update the activity
+      const stmt = this.db.prepare(
+        "UPDATE user_activities SET title = ?, description = ?, startTime = ?, endTime = ?, status = ? WHERE id = ?",
+      );
+      stmt.run(
+        activity.title,
+        activity.description,
+        activity.startTime,
+        activity.endTime,
+        activity.status || "pending",
+        activity.id,
+      );
+    } catch (error) {
+      logger.error("Error updating user activity:", error);
+      throw error;
+    }
+  }
+
+  public deleteUserActivity(activityId: number): void {
+    try {
+      const stmt = this.db.prepare("DELETE FROM user_activities WHERE id = ?");
+      stmt.run(activityId);
+    } catch (error) {
+      logger.error("Error deleting user activity:", error);
       throw error;
     }
   }

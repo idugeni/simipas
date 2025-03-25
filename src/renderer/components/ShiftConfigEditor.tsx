@@ -3,9 +3,9 @@ import { ShiftConfig, ShiftType, User, UserType } from "../../lib/database";
 import { ShiftManager } from "../../lib/shiftManager";
 
 interface ShiftActivity {
-  skpkgOption: number;
+  title: string;
   description: string;
-  quantity: number;
+  status?: string;
 }
 
 interface ShiftConfigEditorProps {
@@ -51,20 +51,19 @@ export const ShiftConfigEditor: React.FC<ShiftConfigEditorProps> = ({
   const handleAddActivity = () => {
     setActivities([
       ...activities,
-      { skpkgOption: 1, description: "", quantity: 1 },
+      { title: "", description: "", status: "pending" },
     ]);
   };
 
   const handleActivityChange = (
     index: number,
     field: keyof ShiftActivity,
-    value: string | number,
+    value: string,
   ) => {
     const newActivities = [...activities];
     newActivities[index] = {
       ...newActivities[index],
-      [field]:
-        field === "skpkgOption" || field === "quantity" ? Number(value) : value,
+      [field]: value,
     };
     setActivities(newActivities);
   };
@@ -144,35 +143,18 @@ export const ShiftConfigEditor: React.FC<ShiftConfigEditorProps> = ({
 
         {activities.map((activity, index) => (
           <div key={index} className="border rounded-md p-4 space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  SKP Option
-                </label>
-                <input
-                  type="number"
-                  min="1"
-                  value={activity.skpkgOption}
-                  onChange={(e) =>
-                    handleActivityChange(index, "skpkgOption", e.target.value)
-                  }
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Kuantitas
-                </label>
-                <input
-                  type="number"
-                  min="1"
-                  value={activity.quantity}
-                  onChange={(e) =>
-                    handleActivityChange(index, "quantity", e.target.value)
-                  }
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                />
-              </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Judul Kegiatan
+              </label>
+              <input
+                type="text"
+                value={activity.title}
+                onChange={(e) =>
+                  handleActivityChange(index, "title", e.target.value)
+                }
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">
@@ -186,6 +168,22 @@ export const ShiftConfigEditor: React.FC<ShiftConfigEditorProps> = ({
                 rows={2}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Status
+              </label>
+              <select
+                value={activity.status || "pending"}
+                onChange={(e) =>
+                  handleActivityChange(index, "status", e.target.value)
+                }
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              >
+                <option value="pending">Pending</option>
+                <option value="in-progress">In Progress</option>
+                <option value="completed">Completed</option>
+              </select>
             </div>
             <button
               type="button"

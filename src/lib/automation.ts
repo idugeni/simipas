@@ -38,9 +38,9 @@ export class SimpegAutomation {
           await this.journalManager.fillJournalEntry({
             startTime: config.startTime,
             endTime: config.endTime,
-            skpkgOption: config.skpkgOption,
+            title: config.title,
             description: config.description,
-            quantity: config.quantity,
+            status: config.status,
           });
           count++;
         } catch (error) {

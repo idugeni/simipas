@@ -1,4 +1,4 @@
-import { AutomationResult, User, UserInput } from "./types";
+import { AutomationResult, User, UserActivity, UserInput } from "./types";
 
 export interface API {
   runAutomation: (userInput: UserInput) => Promise<AutomationResult>;
@@ -9,6 +9,8 @@ export interface API {
       message: string;
     }) => void,
   ) => void;
+
+  // User management
   getAllUsers: () => Promise<User[]>;
   getUsers: () => Promise<User[]>;
   getUser: (nip: string) => Promise<User>;
@@ -16,16 +18,16 @@ export interface API {
   createUser: (userData: User) => Promise<void>;
   updateUser: (userData: User) => Promise<void>;
   deleteUser: (id: string) => Promise<void>;
+
+  // Activity management
+  getUserActivities: (nip: string) => Promise<UserActivity[]>;
+  addUserActivity: (nip: string, activityData: UserActivity) => Promise<void>;
   updateUserActivity: (
     nip: string,
-    activityData: {
-      skpkgOption: number;
-      startTime: string;
-      endTime: string;
-      description: string;
-      quantity: number;
-    },
+    activityData: UserActivity,
   ) => Promise<void>;
+  deleteUserActivity: (activityId: number) => Promise<void>;
+
   exit: () => void;
 }
 

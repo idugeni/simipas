@@ -5,54 +5,47 @@ import { FaUsers, FaCalendarAlt, FaClipboardList } from "react-icons/fa";
 
 const DashboardGrid: React.FC = () => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-7xl mx-auto px-2 sm:px-4 py-4 sm:py-6">
-      <Link to="/users" className="h-full group">
-        <DashboardCard
-          title="Manajemen Pengguna"
-          content={
-            <div className="flex flex-col items-center text-center space-y-4">
-              <div className="flex-shrink-0 p-4 bg-blue-100 rounded-full shadow-lg transition-all duration-300 hover:shadow-xl hover:bg-blue-200">
-                <FaUsers className="text-4xl text-blue-600" />
+    <div className="max-w-7xl mx-auto px-4 py-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <Link to="/users" className="h-full">
+          <DashboardCard title="Manajemen Pengguna">
+            <div className="flex flex-col items-center justify-center space-y-4">
+              <div className="p-4 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full shadow-md">
+                <FaUsers className="text-white text-4xl" />
               </div>
-              <p className="text-gray-600">
-                Kelola data pengguna sistem dengan mudah dan efisien
+              <p className="text-gray-700 text-center">
+                Kelola data pengguna sistem dengan mudah dan efisien.
               </p>
             </div>
-          }
-        />
-      </Link>
+          </DashboardCard>
+        </Link>
 
-      <Link to="/activities" className="h-full">
-        <DashboardCard
-          title="Pengaturan Aktivitas"
-          content={
-            <div className="flex flex-col items-center text-center space-y-4">
-              <div className="flex-shrink-0 p-4 bg-green-100 rounded-full shadow-lg transition-all duration-300 hover:shadow-xl hover:bg-green-200">
-                <FaClipboardList className="text-4xl text-green-600" />
+        <Link to="/activities" className="h-full">
+          <DashboardCard title="Pengaturan Aktivitas">
+            <div className="flex flex-col items-center justify-center space-y-4">
+              <div className="p-4 bg-gradient-to-r from-green-500 to-green-600 rounded-full shadow-md">
+                <FaClipboardList className="text-white text-4xl" />
               </div>
-              <p className="text-gray-600">
-                Atur dan monitor aktivitas serta jurnal dengan terstruktur
+              <p className="text-gray-700 text-center">
+                Atur dan monitor aktivitas serta jurnal dengan terstruktur.
               </p>
             </div>
-          }
-        />
-      </Link>
+          </DashboardCard>
+        </Link>
 
-      <Link to="/shifts" className="h-full">
-        <DashboardCard
-          title="Manajemen Shift"
-          content={
-            <div className="flex flex-col items-center text-center space-y-4">
-              <div className="flex-shrink-0 p-4 bg-purple-100 rounded-full shadow-lg transition-all duration-300 hover:shadow-xl hover:bg-purple-200">
-                <FaCalendarAlt className="text-4xl text-purple-600" />
+        <Link to="/shifts" className="h-full">
+          <DashboardCard title="Manajemen Shift">
+            <div className="flex flex-col items-center justify-center space-y-4">
+              <div className="p-4 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full shadow-md">
+                <FaCalendarAlt className="text-white text-4xl" />
               </div>
-              <p className="text-gray-600">
-                Kelola dan atur jadwal shift dengan fleksibel
+              <p className="text-gray-700 text-center">
+                Kelola dan atur jadwal shift dengan fleksibel.
               </p>
             </div>
-          }
-        />
-      </Link>
+          </DashboardCard>
+        </Link>
+      </div>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 {
   "name": "simipas",
-  "version": "0.6.5-alpha",
+  "version": "1.0.0-beta",
   "description": "SIMIPAS adalah sebuah aplikasi yang digunakan untuk mengotomatisasi proses pengisian jurnal harian pada SIMPEG Kemenimipas.",
   "main": "./dist/main.js",
   "scripts": {

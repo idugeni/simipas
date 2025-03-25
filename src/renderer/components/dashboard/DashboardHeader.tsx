@@ -1,12 +1,15 @@
 import React from "react";
-import { FaChartBar } from "react-icons/fa";
 
 const DashboardHeader: React.FC = () => {
   return (
-    <div className="flex items-center space-x-4">
-      <FaChartBar className="text-3xl text-blue-600" />
-      <h1 className="text-2xl font-bold text-gray-800">Dashboard Overview</h1>
-    </div>
+    <header className="bg-white shadow-md rounded-lg p-6 mb-6">
+      <div className="text-center">
+        <h1 className="text-3xl font-bold text-gray-800">Dashboard Overview</h1>
+        <p className="text-gray-500 mt-2">
+          Insights at a glance for your business performance
+        </p>
+      </div>
+    </header>
   );
 };
 

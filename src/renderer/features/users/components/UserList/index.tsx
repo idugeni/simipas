@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { User } from "../../../lib/types";
+import { User } from "../../../../../lib/types";
 import {
   FaCog,
   FaEdit,
@@ -16,6 +16,8 @@ interface UserListProps {
   onUserSelect: (user: User) => void;
   onEdit: (user: User) => void;
   onDelete: (nip: string) => void;
+  selectedUser?: User;
+  compact?: boolean;
 }
 
 const UserList: React.FC<UserListProps> = ({
@@ -23,6 +25,8 @@ const UserList: React.FC<UserListProps> = ({
   onUserSelect,
   onEdit,
   onDelete,
+  selectedUser,
+  compact = false,
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -33,7 +37,9 @@ const UserList: React.FC<UserListProps> = ({
   );
 
   return (
-    <div className="space-y-4">
+    <div
+      className={`space-y-4 ${compact ? "max-h-screen overflow-y-auto" : ""}`}
+    >
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4 p-4 bg-white rounded-lg shadow-sm">
         <div className="relative w-full sm:w-96">
           <input
@@ -54,11 +60,6 @@ const UserList: React.FC<UserListProps> = ({
               fullName: "",
               password: "",
               userType: "PENGAMANAN",
-              skpkgOption: 0,
-              startTime: "",
-              endTime: "",
-              description: "",
-              quantity: 0,
             })
           }
           className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition-colors duration-200 shadow-sm hover:shadow sm:w-auto justify-center"
@@ -113,7 +114,7 @@ const UserList: React.FC<UserListProps> = ({
             {filteredUsers.map((user) => (
               <tr
                 key={user.nip}
-                className="hover:bg-gray-50 transition-colors duration-150"
+                className={`hover:bg-gray-50 transition-colors duration-150 ${selectedUser?.nip === user.nip ? "bg-blue-50" : ""}`}
               >
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm font-medium text-gray-900">
@@ -127,9 +128,15 @@ const UserList: React.FC<UserListProps> = ({
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
-                    className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${user.userType === "PENGAMANAN" ? "bg-blue-100 text-blue-800" : "bg-green-100 text-green-800"}`}
+                    className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
+                      user.userType === "PENGAMANAN"
+                        ? "bg-blue-100 text-blue-800"
+                        : "bg-green-100 text-green-800"
+                    }`}
                   >
-                    {user.userType}
+                    {user.userType === "PENGAMANAN"
+                      ? "Pengamanan"
+                      : "Staff Administrasi"}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
@@ -138,7 +145,7 @@ const UserList: React.FC<UserListProps> = ({
                     className="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-50 text-blue-600 rounded-md hover:bg-blue-100 transition-colors duration-150"
                   >
                     <FaCog className="w-4 h-4" />
-                    Settings
+                    Activities
                   </button>
                   <button
                     onClick={() => onEdit(user)}
